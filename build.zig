@@ -24,6 +24,10 @@ pub fn build(b: *Build) void {
     mbedtls.installHeadersDirectory(mbedtls_dep.path("include/psa"), "psa", .{});
     b.installArtifact(mbedtls);
 
+    if (target.result.os.tag == .windows) {
+        mbedtls.linkSystemLibrary("bcrypt");
+    }
+
     const selftest = b.addExecutable(.{
         .name = "selftest",
         .target = target,
@@ -36,6 +40,7 @@ pub fn build(b: *Build) void {
         .flags = &.{},
     });
     selftest.linkLibrary(mbedtls);
+    b.getInstallStep().dependOn(&selftest.step);
 
     const selftest_run = b.addRunArtifact(selftest);
     const test_step = b.step("test", "Run Tests");
