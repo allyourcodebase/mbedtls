@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, linux-latest, macos-latest]
+        os: [windows-latest, ubuntu-latest, macos-latest]
         target: [
           native,
           x86_64-linux-gnu,
