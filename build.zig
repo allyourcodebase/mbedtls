@@ -33,7 +33,7 @@ pub fn build(b: *Build) void {
         .optimize = optimize,
         .link_libc = true,
     });
-    selftest.defineCMacro("MBEDTLS_SELF_TEST", null);
+    selftest.root_module.addCMacro("MBEDTLS_SELF_TEST", "1");
     selftest.addCSourceFile(.{
         .file = mbedtls_dep.path("programs/test/selftest.c"),
         .flags = &.{},
