@@ -7,6 +7,8 @@ pub fn build(b: *Build) void {
 
     const mbedtls_dep = b.dependency("mbedtls", .{});
 
+    const threading = b.option(bool, "threading", "Enable thread safety") orelse false;
+
     const mbedtls = b.addLibrary(.{
         .name = "mbedtls",
         .linkage = .static,
@@ -24,6 +26,10 @@ pub fn build(b: *Build) void {
     if (target.result.os.tag == .freebsd) {
         // Otherwise `explicit_bzero` cannot be found
         mbedtls.root_module.addCMacro("__BSD_VISIBLE", "1");
+    }
+    if (threading) {
+        mbedtls.root_module.addCMacro("MBEDTLS_THREADING_C", "");
+        mbedtls.root_module.addCMacro("MBEDTLS_THREADING_PTHREAD", "");
     }
 
     mbedtls.installHeadersDirectory(mbedtls_dep.path("include/mbedtls"), "mbedtls", .{});
