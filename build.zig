@@ -169,4 +169,5 @@ const srcs: []const []const u8 = &.{
     "ecdsa.c",
     "nist_kw.c",
     "pk_ecc.c",
+    "psa_crypto_random.c",
 };
